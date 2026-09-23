@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoD-Structured 3D Gaussian Splatting for Streaming Video Reconstruction - TVCG 2026 Submission</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding-top: 20px;
+        }
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem;
+        }
+        .video-container {
+            margin: 30px 0;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr;       
+            row-gap: 30px;                
+            margin: 20px 0;
+        }
+        
+        .result-item {
+            text-align: center;
+            max-width: 100%;              
+            margin: 0 auto;               
+        }
+        .result-item img,
+        .result-item embed {
+            width: 100%; 
+            height: auto; 
+            max-height: 70vh; 
+        }
+        
+        .result-item video {
+            width: 100%;         
+            height: auto;      
+            border-radius: 8px;   
+        }
+        .text-justify {
+            text-align: justify;
+        }
+        pre {
+            background-color: #e9eeef;
+            padding: 1.25em;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="container">
+        <div class="jumbotron text-center">
+            <div class="section head">
+
+                <h1>LoD-Structured 3D Gaussian Splatting for Streaming Video Reconstruction</h1>
+                <div class="authors">
+                    <a href="https://scholar.google.com/citations?hl=zh-CN&user=9SPgDacAAAAJ&view_op=list_works&sortby=pubdate/" target="_blank">Xinhui Liu</a><sup> 1</sup>&#160;&#160;
+                    <a href="https://cassiepython.github.io/" target="_blank">Can Wang</a><sup> 1</sup>&#160;&#160;
+                    <a href="https://scholar.google.cz/citations?user=3FsuonEAAAAJ&hl=zh-CN/" target="_blank">Lei Liu</a><sup> 1</sup>&#160;&#160;
+                    <a href="https://www.newcastle.edu.au/profile/zhenghao-chen/" target="_blank">Zhenghao Chen</a><sup> 2</sup>&#160;&#160;
+                    <a href="https://scholar.google.com/citations?user=c8koDJgAAAAJ&hl=zh-CN&oi=ao/" target="_blank">Wei Jiang</a><sup> 3</sup>&#160;&#160;
+                    <a href="https://scholar.google.com/citations?user=aLii7l0AAAAJ&hl=zh-CN&oi=ao/" target="_blank">Wei Wang</a><sup> 3</sup>&#160;&#160;
+                    <a href="https://www.ai.hku.hk/people/academic-staff/dongxu/" target="_blank">Dong Xu</a><sup> 1</sup>&#160;&#160;
+                </div>
+
+                <div class="affiliations">
+                    <sup>1</sup>University of Hong Kong&#160;&#160;
+                    <sup>2</sup>University of Newcastle&#160;&#160;
+                    <sup>3</sup>the Futurewei Technologies Inc.&#160;&#160;
+                </div>
+
+            </div>
+            
+
+            <hr>
+            <div class="row justify-content-center mt-4">
+                <div class="col-auto">
+                    <a class="btn btn-success"
+                       href="https://github.com/Xinhui-99/StreamLoD_GS/tree/main"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        💻 Code
+                    </a>
+                </div>
+
+                <div class="col-auto">
+                    <a class="btn btn-primary"
+                       href="https://arxiv.org/pdf/2601.18475"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        📄 Paper
+                    </a>
+                </div>
+            </div>
+
+
+    <!-- Abstract -->
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>Abstract</h3>
+                <hr style="margin-top:0px">
+                <div class="row" style="margin-bottom:5px">
+                    <div class="col" style="text-align:center">
+                        <video controls style="width:100%; max-height:680px; background: #f8f9fa;">
+                            <source src="./video.mov" type="video/mp4"> 
+                        </video>
+                        </div>
+                </div>
+
+                <p class="mt-3 text-justify">
+                    3D Gaussian Splatting enables photorealistic and practical free-viewpoint video rendering due to its real-time rendering ability. However, Streaming Free-Viewpoint Video (SFVV) introduces new challenges, including fast optimization, maintaining high fidelity with sparse views, and minimizing storage requirements for efficient bandwidth usage. In this work, we propose StreamLoD-GS, an LoD-based Gaussian Splatting framework designed specifically for SFVV. Our approach includes: 1) an Anchor- and Octree-based LoD-structured 3DGS with a hierarchical Gaussian dropout technique to ensure efficient and stable optimization while maintaining high-quality rendering; 2) a GMM-based motion partitioning mechanism that separates dynamic and static content, refining dynamic regions while preserving background stability; and 3) a quantized residual refinement framework that reduces storage requirements without compromising visual quality. Extensive experiments demonstrate that StreamLoD-GS achieves competitive or state-of-the-art performance in terms of quality, efficiency, and storage, outperforming related methods.
+                    </p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Method Overview (Optional) -->
+    <div class="container mt-5">
+        <div class="row" style="margin-bottom:5px">
+            <div class="col" style="text-align:center">
+                <h3>Method Overview</h3>
+                <hr>
+                <img src="./method.png"
+                   style="width:100%; height:680px;" />
+                <p class="mt-3 text-justify">
+                    Illustration of our proposed StreamLoD-GS. It comprises three major components: (a) LoD-Structured 3DGS with Anchor and Octree; (b) GMM-Based Motion Partitioning; (c) Quantized Residual Refinement. Bottom: The streaming training pipeline. Frames are processed sequentially: the initial frame (Time 0) undergoes LoD-structured 3DGS optimization, while subsequent frames apply motion partitioning and residual refinement to ensure temporally coherent RGB rendering throughout the stream.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Results -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h3>Videos</h3>
+                <hr>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./discussion_cam01_concatenated_view0.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Meet Room (Scene: Discussion). The model is trained with cam00, cam06, and cam12, and tested on cam01.</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./discussion_cam05_concatenated.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Tested on cam05.</strong></p>
+                    </div> 
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./discussion_cam08_concatenated.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Tested on cam08.</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./discussion_cam10_concatenated.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Tested on cam10.</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./martini_cam08_concatenated_view6.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>N3DV (Scene: Coffee Martini). The model is trained with cam00, cam09, and cam19, and tested on cam08.</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./martini_cam10_concatenated.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Tested on cam10.</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./martini_cam18_concatenated.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Tested on cam18.</strong></p>
+                    </div>
+
+                    <div class="result-item">
+                        <video controls preload="metadata">
+                            <source src="./martini_cam20_concatenated.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Tested on cam20.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="container mt-5">
+        <div class="row" style="margin-bottom:5px">
+            <div class="col" style="text-align:center">
+                <h3>3D Gaussian Splatting</h3>
+                <hr style="margin-top:0px">
+                <div class="row" style="margin-bottom:20px">
+                    <div class="col-md-4" style="text-align:center; padding: 10px;">
+                        <video controls preload="metadata" style="width:100%; height:auto; border-radius: 8px;">
+                            <source src="./dissussion1.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong> Frame 1. </strong></p>
+                    </div>
+                    <div class="col-md-4" style="text-align:center; padding: 10px;">
+                        <video controls preload="metadata" style="width:100%; height:auto; border-radius: 8px;">
+                            <source src="./discussion6.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Frame 6.</strong></p>
+                    </div>
+                    <div class="col-md-4" style="text-align:center; padding: 10px;">
+                        <video controls preload="metadata" style="width:100%; height:auto; border-radius: 8px;">
+                            <source src="./discussion12.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <p class="mt-2"><strong>Frame 12.</strong></p>
+                    </div>
+                </div>
+                <p class="text-left">
+                    3D Gaussian Splatting of Meet Room Scene (Scene: Discussion).
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <h3>Citation</h3>
+                <hr style="margin-top:0px">
+                <pre><code>@misc{liu2026lodstructured3dgaussiansplatting,
+      title={LoD-Structured 3D Gaussian Splatting for Streaming Video Reconstruction}, 
+      author={Xinhui Liu and Can Wang and Lei Liu and Zhenghao Chen and Wei Jiang and Wei Wang and Dong Xu},
+      year={2026},
+      eprint={2601.18475},
+      archivePrefix={arXiv},
+      primaryClass={cs.GR},
+      url={https://arxiv.org/abs/2601.18475},
+    }</code></pre>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
